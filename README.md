@@ -25,8 +25,8 @@ SKSE plugin that enables sneak attacks with magic
 
 ## Building
 ```
-git clone https://github.com/powerof3/BaseObjectSwapper.git
-cd BaseObjectSwapper
+git clone https://github.com/powerof3/MagicSneakAttacks.git
+cd MagicSneakAttacks
 ```
 
 ### SSE
