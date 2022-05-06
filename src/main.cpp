@@ -19,7 +19,7 @@ namespace Hit::Magic
 				    if (settings->GetSpellValid(a_spell)) {
 						float sneakAttackMult = Settings::GetSingleton()->GetSneakAttackMult(a_projectile);
 						if (sneakAttackMult > 1.0f) {
-							RE::BGSEntryPoint::HandleEntryPoint(RE::BGSEntryPoint::ENTRY_POINT::kModSneakAttackMult, a_attacker, a_spell, a_target, &sneakAttackMult);
+							RE::BGSEntryPoint::HandleEntryPoint(RE::BGSEntryPoint::ENTRY_POINT::kModSneakAttackMult, a_attacker, a_spell, a_target, std::addressof(sneakAttackMult));
 							return sneakAttackMult;
 						}
 					}
@@ -83,7 +83,7 @@ namespace Hit::Magic
 
 							a_event.flags.set(HitFlag::kSneakAttack);
 
-							aggressorActor->UseSkill(RE::ActorValue::kSneak, settings->GetSkillXP(), source);
+							aggressorActor->UseSkill(RE::ActorValue::kSneak, settings->GetSkillXP(), spell);
 
 							if (settings->ShowNotification()) {
 								const auto sneakMessage = fmt::format("{}{:.1f}{}", detail::get_gmst("sSuccessfulSneakAttackMain")->GetString(), sneakAttackMult, detail::get_gmst("sSuccessfulSneakAttackEnd")->GetString());
