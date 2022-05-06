@@ -23,12 +23,12 @@ bool Settings::LoadSettings()
 	get_value(disableSound, "Settings", "Hide Notification Sound", nullptr);
 	get_value(fSneakAttackSkillUsageMagic, "Settings", "fSneakAttackSkillUsageMagic", ";Skill XP gained for each magic sneak attack");
 
-	get_value(fCombatSneakMissileMult, "Sneak Attack Base Multipliers", "fCombatSneakMissileMult", ";Missiles");
-	get_value(fCombatSneakGrenadeMult, "Sneak Attack Base Multipliers", "fCombatSneakLobberMult", ";Runes");
-	get_value(fCombatSneakBeamMult, "Sneak Attack Base Multipliers", "fCombatSneakBeamMult", ";Shock spells");
-	get_value(fCombatSneakFlamesMult, "Sneak Attack Base Multipliers", "fCombatSneakFlamesMult", ";Flames");
-	get_value(fCombatSneakConeMult, "Sneak Attack Base Multipliers", "fCombatSneakConeMult", ";Shouts");
-	get_value(fCombatSneakBarrierMult, "Sneak Attack Base Multipliers", "fCombatSneakBarrierMult", ";Wall spells");
+	get_value(fCombatSneakMissileMult, "Sneak Attack Base Multipliers (Projectile Type)", "fCombatSneakMissileMult", ";Missiles");
+	get_value(fCombatSneakGrenadeMult, "Sneak Attack Base Multipliers (Projectile Type)", "fCombatSneakLobberMult", ";Runes");
+	get_value(fCombatSneakBeamMult, "Sneak Attack Base Multipliers (Projectile Type)", "fCombatSneakBeamMult", ";Lightning");
+	get_value(fCombatSneakFlamesMult, "Sneak Attack Base Multipliers (Projectile Type)", "fCombatSneakFlamesMult", ";eg.Flames");
+	get_value(fCombatSneakConeMult, "Sneak Attack Base Multipliers (Projectile Type)", "fCombatSneakConeMult", ";Shouts");
+	get_value(fCombatSneakBarrierMult, "Sneak Attack Base Multipliers (Projectile Type)", "fCombatSneakBarrierMult", ";Wall spells");
 
 	get_value(alteration, "Valid Spell Schools", "Alteration", ";Spells belonging to these schools can trigger sneak attacks");
 	get_value(conjuration, "Valid Spell Schools", "Conjuration", nullptr);
