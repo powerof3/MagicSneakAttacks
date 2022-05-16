@@ -53,7 +53,7 @@ namespace Hit::Magic
 
 		static void Install()
 		{
-			REL::Relocation<std::uintptr_t> target{ RELOCATION_ID(33763, 34547), OFFSET(0x4A3, 0x656) };
+			REL::Relocation<std::uintptr_t> target{ RELOCATION_ID(33763, 34547), OFFSET_3(0x4A3, 0x656,0x427) };
 			stl::write_thunk_call<AdjustActiveEffect>(target.address());
 
 			logger::info("Hooked Active Effect Adjust"sv);
@@ -141,8 +141,13 @@ extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Query(const SKSE::QueryInterface* a
 	}
 
 	const auto ver = a_skse->RuntimeVersion();
-	if (ver < SKSE::RUNTIME_1_5_39) {
-		logger::critical(FMT_STRING("Unsupported runtime version {}"), ver.string());
+	if (ver
+#	ifndef SKYRIMVR
+		< SKSE::RUNTIME_1_5_39
+#	else
+		> SKSE::RUNTIME_VR_1_4_15_1
+#	endif
+	) {		logger::critical(FMT_STRING("Unsupported runtime version {}"), ver.string());
 		return false;
 	}
 
