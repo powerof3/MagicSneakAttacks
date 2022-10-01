@@ -47,7 +47,7 @@ bool Settings::ShowNotification() const
 	return !disableNotification;
 }
 
-bool Settings::ShowNotificationSound() const
+bool Settings::PlayNotificationSound() const
 {
 	return !disableSound;
 }

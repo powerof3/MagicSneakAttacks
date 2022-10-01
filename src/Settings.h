@@ -23,7 +23,7 @@ public:
 	bool LoadSettings();
 
     [[nodiscard]] bool ShowNotification() const;
-	[[nodiscard]] bool ShowNotificationSound() const;
+	[[nodiscard]] bool PlayNotificationSound() const;
 
 	[[nodiscard]] float GetSkillXP() const;
 
