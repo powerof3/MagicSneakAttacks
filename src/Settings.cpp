@@ -35,6 +35,7 @@ bool Settings::LoadSettings()
 	get_value(destruction, "Valid Spell Schools", "Destruction", nullptr);
 	get_value(illusion, "Valid Spell Schools", "Illusion", nullptr);
 	get_value(restoration, "Valid Spell Schools", "Restoration", nullptr);
+	get_value(enchanting, "Valid Spell Schools", "Enchantments", nullptr);
 	get_value(other, "Valid Spell Schools", "Other", nullptr);
 
 	(void)ini.SaveFile(path);
@@ -103,6 +104,8 @@ bool Settings::GetSpellValid(const RE::MagicItem* a_spell) const
 		return illusion;
 	case RE::ActorValue::kRestoration:
 		return restoration;
+	case RE::ActorValue::kEnchanting:
+		return enchanting && a_spell->GetSpellType() == RE::MagicSystem::SpellType::kStaffEnchantment;
 	default:
 		return other;
 	}

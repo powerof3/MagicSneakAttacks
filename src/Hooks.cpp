@@ -54,9 +54,7 @@ namespace MagicSneakAttacks
 	{
 		static void thunk(RE::BSTEventSource<RE::TESHitEvent>& a_source, RE::TESHitEvent& a_event)
 		{
-			RE::DebugNotification("triggered");
-
-		    using HitFlag = RE::TESHitEvent::Flag;
+			using HitFlag = RE::TESHitEvent::Flag;
 
 			const auto aggressor = a_event.cause.get();
 			const auto target = a_event.target.get();
@@ -66,7 +64,14 @@ namespace MagicSneakAttacks
 			if (aggressor && target && source && projectile) {
 				const auto aggressorActor = aggressor->As<RE::Actor>();
 				const auto targetActor = target->As<RE::Actor>();
-			    const auto spell = source->As<RE::MagicItem>();
+
+				auto spell = source->As<RE::MagicItem>();
+				if (!spell) {
+					const auto weapon = source->As<RE::TESObjectWEAP>();
+					if (weapon && weapon->IsStaff()) {
+						spell = weapon->formEnchanting;
+					}
+				}
 
 				if (aggressorActor && targetActor && spell) {
 					if (const auto effectItem = spell->GetCostliestEffectItem(); effectItem && effectItem->IsHostile()) {
@@ -102,12 +107,12 @@ namespace MagicSneakAttacks
 	{
 		Settings::GetSingleton()->LoadSettings();
 
-		REL::Relocation<std::uintptr_t> check_add_effect{ RELOCATION_ID(33763, 34547), OFFSET_3(0x4A3, 0x656, 0x427) }; //MagicTarget::CheckAddEffect
+		REL::Relocation<std::uintptr_t> check_add_effect{ RELOCATION_ID(33763, 34547), OFFSET_3(0x4A3, 0x656, 0x427) };  // MagicTarget::CheckAddEffect
 		stl::write_thunk_call<AdjustActiveEffect>(check_add_effect.address());
 
 		logger::info("Hooked Active Effect Adjust"sv);
 
-		REL::Relocation<std::uintptr_t> add_target{ RELOCATION_ID(37832, 38786), OFFSET(0x1C3, 0x29B) }; //MagicTarget::AddTarget
+		REL::Relocation<std::uintptr_t> add_target{ RELOCATION_ID(37832, 38786), OFFSET(0x1C3, 0x29B) };  // MagicTarget::AddTarget
 		stl::write_thunk_call<SendHitEvent>(add_target.address());
 
 		logger::info("Hooked Magic Hit"sv);

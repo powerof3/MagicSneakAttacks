@@ -3,17 +3,6 @@
 class Settings
 {
 public:
-	enum class SpellSchools
-	{
-	    kNone = 0,
-		kAlteration = 1 << 0,
-		kConjuration = 1 << 1,
-		kDestruction = 1 << 2,
-		kIllusion = 1 << 3,
-		kRestoration = 1 << 4,
-		kOther = 1 << 5
-	};
-
     [[nodiscard]] static Settings* GetSingleton()
 	{
 		static Settings singleton;
@@ -48,5 +37,6 @@ private:
 	bool destruction{ true };
 	bool illusion{ true };
 	bool restoration{ true };
+	bool enchanting{ true };
 	bool other{ false };
 };
