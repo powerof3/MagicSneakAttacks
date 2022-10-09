@@ -3,7 +3,7 @@
 class Settings
 {
 public:
-    [[nodiscard]] static Settings* GetSingleton()
+	[[nodiscard]] static Settings* GetSingleton()
 	{
 		static Settings singleton;
 		return std::addressof(singleton);
@@ -11,13 +11,13 @@ public:
 
 	bool LoadSettings();
 
-    [[nodiscard]] bool ShowNotification() const;
+	[[nodiscard]] bool ShowNotification() const;
 	[[nodiscard]] bool PlayNotificationSound() const;
 
 	[[nodiscard]] float GetSkillXP() const;
 
-    [[nodiscard]] float GetSneakAttackMult(const RE::BGSProjectile* a_projectile) const;
-	[[nodiscard]] bool GetSpellValid(const RE::MagicItem* a_spell) const;
+	[[nodiscard]] float GetSneakAttackMult(const RE::BGSProjectile* a_projectile) const;
+	[[nodiscard]] bool GetSpellValid(RE::MagicItem* a_spell) const;
 
 private:
 	bool disableNotification{ false };
@@ -37,6 +37,8 @@ private:
 	bool destruction{ true };
 	bool illusion{ true };
 	bool restoration{ true };
-	bool enchanting{ true };
 	bool other{ false };
+
+	bool staves{ true };
+	bool scrolls{ true };
 };

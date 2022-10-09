@@ -35,8 +35,10 @@ bool Settings::LoadSettings()
 	get_value(destruction, "Valid Spell Schools", "Destruction", nullptr);
 	get_value(illusion, "Valid Spell Schools", "Illusion", nullptr);
 	get_value(restoration, "Valid Spell Schools", "Restoration", nullptr);
-	get_value(enchanting, "Valid Spell Schools", "Enchantments", nullptr);
 	get_value(other, "Valid Spell Schools", "Other", nullptr);
+
+	get_value(staves, "Valid Spell Types", "Staves", nullptr);
+	get_value(scrolls, "Valid Spell Types", "Scrolls", nullptr);
 
 	(void)ini.SaveFile(path);
 
@@ -84,29 +86,54 @@ float Settings::GetSneakAttackMult(const RE::BGSProjectile* a_projectile) const
 	return 0.0f;
 }
 
-bool Settings::GetSpellValid(const RE::MagicItem* a_spell) const
+bool Settings::GetSpellValid(RE::MagicItem* a_spell) const
 {
-	if (a_spell->GetCastingType() == RE::MagicSystem::CastingType::kConstantEffect) {
+	using namespace RE::MagicSystem;
+
+	if (a_spell->GetCastingType() == CastingType::kConstantEffect) {
 		return false;
 	}
-	if (a_spell->GetDelivery() == RE::MagicSystem::Delivery::kSelf) {
+	if (a_spell->GetDelivery() == Delivery::kSelf) {
 		return false;
 	}
 
-	switch (a_spell->GetAssociatedSkill()) {
-	case RE::ActorValue::kAlteration:
-		return alteration;
-	case RE::ActorValue::kConjuration:
-		return conjuration;
-	case RE::ActorValue::kDestruction:
-		return destruction;
-	case RE::ActorValue::kIllusion:
-		return illusion;
-	case RE::ActorValue::kRestoration:
-		return restoration;
-	case RE::ActorValue::kEnchanting:
-		return enchanting && a_spell->GetSpellType() == RE::MagicSystem::SpellType::kStaffEnchantment;
+	const auto is_skill_valid = [&](RE::ActorValue a_skill) {
+		switch (a_skill) {
+		case RE::ActorValue::kAlteration:
+			return alteration;
+		case RE::ActorValue::kConjuration:
+			return conjuration;
+		case RE::ActorValue::kDestruction:
+			return destruction;
+		case RE::ActorValue::kIllusion:
+			return illusion;
+		case RE::ActorValue::kRestoration:
+			return restoration;
+		default:
+			return other;
+		}
+	};
+
+	constexpr auto get_costliest_effect_skill = [](RE::MagicItem* a_spell) {
+		const auto effect = a_spell->GetCostliestEffectItem();
+		const auto baseEffect = effect ? effect->baseEffect : nullptr;
+
+		return baseEffect ? baseEffect->GetMagickSkill() : RE::ActorValue::kNone;
+	};
+
+	bool result = false;
+
+	switch (a_spell->GetSpellType()) {
+	case SpellType::kScroll:
+		result = scrolls && is_skill_valid(get_costliest_effect_skill(a_spell));
+		break;
+	case SpellType::kStaffEnchantment:
+		result = staves && is_skill_valid(get_costliest_effect_skill(a_spell));
+		break;
 	default:
-		return other;
+		result = is_skill_valid(a_spell->GetAssociatedSkill());
+		break;
 	}
+
+	return result;
 }
