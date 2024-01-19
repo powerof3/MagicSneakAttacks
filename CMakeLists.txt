@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 set(NAME "po3_MagicSneakAttacks" CACHE STRING "")
-set(VERSION 1.2.0  CACHE STRING "")
+set(VERSION 1.3.0  CACHE STRING "")
 set(VR_VERSION 1)
 set(AE_VERSION 1)
 
@@ -140,7 +140,7 @@ else ()
 	)
 endif()
 
-find_path(SIMPLEINI_INCLUDE_DIRS "ConvertUTF.c")
+find_path(CLIB_UTIL_INCLUDE_DIRS "ClibUtil/utils.hpp")
 
 # ---- Add source files ----
 
@@ -191,7 +191,7 @@ target_include_directories(
 	PRIVATE
 		${CMAKE_CURRENT_BINARY_DIR}/include
 		${CMAKE_CURRENT_SOURCE_DIR}/src
-		${SIMPLEINI_INCLUDE_DIRS}
+		${CLIB_UTIL_INCLUDE_DIRS}
 )
 
 target_link_libraries(

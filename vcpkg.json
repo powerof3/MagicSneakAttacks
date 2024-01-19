@@ -1,13 +1,13 @@
 {
   "name": "magic-sneak-attacks",
-  "version-string": "1.2.0",
+  "version-string": "1.3.0",
   "description": "Magic Sneak Attacks",
   "homepage": "",
   "license": "MIT",
   "dependencies": [
     "boost-stl-interfaces",
     "rsm-binary-io",
-    "simpleini",
+    "clib-util",
     "spdlog",
     "xbyak"
   ]

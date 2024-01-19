@@ -1,14 +1,8 @@
 #pragma once
 
-class Settings
+class Settings : public ISingleton<Settings>
 {
 public:
-	[[nodiscard]] static Settings* GetSingleton()
-	{
-		static Settings singleton;
-		return std::addressof(singleton);
-	}
-
 	bool LoadSettings();
 
 	[[nodiscard]] bool ShowNotification() const;
@@ -17,9 +11,12 @@ public:
 	[[nodiscard]] float GetSkillXP() const;
 
 	[[nodiscard]] float GetSneakAttackMult(const RE::BGSProjectile* a_projectile) const;
-	[[nodiscard]] bool GetSpellValid(RE::MagicItem* a_spell) const;
+	[[nodiscard]] bool  GetSpellValid(RE::MagicItem* a_spell) const;
 
 private:
+	bool IsSkillValid(RE::MagicItem* a_spell) const;
+
+    // members
 	bool disableNotification{ false };
 	bool disableSound{ false };
 
