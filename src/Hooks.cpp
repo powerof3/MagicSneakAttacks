@@ -5,11 +5,6 @@ namespace MagicSneakAttacks
 {
 	struct detail
 	{
-		static RE::Setting* get_gmst(const char* a_setting)
-		{
-			return RE::GameSettingCollection::GetSingleton()->GetSetting(a_setting);
-		}
-
 		static float get_sneak_attack_mult(RE::Actor* a_attacker, RE::Actor* a_target, RE::MagicItem* a_spell, const RE::BGSProjectile* a_projectile)
 		{
 			if (a_attacker->IsPlayerRef() && a_attacker->IsSneaking() && a_attacker != a_target && !a_target->IsDead()) {
@@ -79,12 +74,8 @@ namespace MagicSneakAttacks
 						aggressorActor->UseSkill(RE::ActorValue::kSneak, settings->GetSkillXP(), spell);
 
 						if (settings->ShowNotification()) {
-							const auto sneakMessage = fmt::format("{}{:.1f}{}",
-								detail::get_gmst("sSuccessfulSneakAttackMain")->GetString(),
-								sneakAttackMult,
-								detail::get_gmst("sSuccessfulSneakAttackEnd")->GetString());
-
-							RE::DebugNotification(sneakMessage.c_str(), settings->PlayNotificationSound() ? "UISneakAttack" : nullptr);
+							const auto sneakMessage = std::format("{}{:.1f}{}", *"sSuccessfulSneakAttackMain"_gs, sneakAttackMult, *"sSuccessfulSneakAttackEnd"_gs);
+							RE::SendHUDMessage::ShowHUDMessage(sneakMessage.c_str(), settings->PlayNotificationSound() ? "UISneakAttack" : nullptr);
 						}
 
 						const RE::CriticalHit::Event event{ aggressorActor, nullptr, true };
@@ -105,11 +96,11 @@ namespace MagicSneakAttacks
 		REL::Relocation<std::uintptr_t> check_add_effect{ RELOCATION_ID(33763, 34547), OFFSET_3(0x4A3, 0x656, 0x427) };  // MagicTarget::CheckAddEffect
 		stl::write_thunk_call<AdjustActiveEffect>(check_add_effect.address());
 
-		logger::info("Hooked Active Effect Adjust"sv);
+		REX::INFO("Hooked Active Effect Adjust"sv);
 
 		REL::Relocation<std::uintptr_t> add_target{ RELOCATION_ID(37832, 38786), OFFSET(0x1C3, 0x29B) };  // MagicTarget::AddTarget
 		stl::write_thunk_call<SendHitEvent>(add_target.address());
 
-		logger::info("Hooked Magic Hit"sv);
+		REX::INFO("Hooked Magic Hit"sv);
 	}
 }
